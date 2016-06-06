@@ -133,6 +133,15 @@ Try<DockerContainerizer*> DockerContainerizer::create(
     const Flags& flags,
     Fetcher* fetcher)
 {
+    if (flags.docker_mesos_image.isSome() &&
+      !strings::startsWith(flags.docker_socket, "unix:") &&
+      !strings::startsWith(flags.docker_socket, "/")) {
+      return Error("The current docker socket '" + flags.docker_socket + "' is "
+             "not valid, only unix domain socket is supported for "
+             "--docker_socket when --docker_mesos_image is enabled");
+}
+
+
   // Create and initialize the container logger module.
   Try<ContainerLogger*> logger =
     ContainerLogger::create(flags.container_logger);

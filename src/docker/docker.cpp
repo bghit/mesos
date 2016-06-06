@@ -100,11 +100,17 @@ Try<Owned<Docker>> Docker::create(
     bool validate,
     const Option<JSON::Object>& config)
 {
+  Docker* docker_ = NULL;
   if (!strings::startsWith(socket, "/")) {
-    return Error("Invalid Docker socket path: " + socket);
+    docker_ = new Docker(path, socket, config);
+  } else {
+    docker_ = new Docker(path, socket, config);
   }
 
-  Owned<Docker> docker(new Docker(path, socket, config));
+  // return Error("Invalid Docker socket path: " + socket);
+
+  // Owned<Docker> docker(new Docker(path, socket, config));
+  Owned<Docker> docker(docker_);
   if (!validate) {
     return docker;
   }

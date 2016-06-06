@@ -173,9 +173,10 @@ protected:
   Docker(const std::string& _path,
          const std::string& _socket,
          const Option<JSON::Object>& _config)
-       : path(_path),
-         socket("unix://" + _socket),
+       : path(_path), socket(_socket),
          config(_config) {}
+         // socket("unix://" + _socket),
+
 
 private:
   static process::Future<Nothing> _run(
